@@ -12,22 +12,20 @@ RSpec.describe PostsController, type: :controller do
 
   describe "GET 'new'" do
     it "renders new view" do
-      # get :new
-      # expect(subject).to render_template :new
+      get :new
+      expect(subject).to render_template :new
     end
   end
 
   describe "GET 'show'" do
     let(:post_something) do
-      Post.find(1)
+      Post.create(body: "Test")
     end
 
     it "renders the show view" do
-      my_post = Post.find(1)
-      get :show, id: my_post.id
+      get :show, id: post_something.id
       expect(subject).to render_template :show
     end
-
   end
 
   describe "POST 'create'" do
@@ -47,9 +45,12 @@ RSpec.describe PostsController, type: :controller do
 
     it "redirects to index page" do
       subject { post :create, good_params }
-#      post :create, params
+
+      # Same as above
+      # post :create, params
+
       # Success case to index page
-      expect(subject).to redirect_to post_path
+      expect(subject).to redirect_to posts_path
     end
 
     it "renders new template on error" do
