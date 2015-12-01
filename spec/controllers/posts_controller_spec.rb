@@ -17,8 +17,21 @@ RSpec.describe PostsController, type: :controller do
     end
   end
 
+  describe "GET 'show'" do
+    let(:post_something) do
+      Post.find(1)
+    end
+
+    it "renders the show view" do
+      my_post = Post.find(1)
+      get :show, id: my_post.id
+      expect(subject).to render_template :show
+    end
+
+  end
+
   describe "POST 'create'" do
-    let(:params) do
+    let(:good_params) do
     {
       post: {
         body: "Something something something"
@@ -26,9 +39,23 @@ RSpec.describe PostsController, type: :controller do
     }
     end
 
+    let (:bad_params) do
+      {
+        post: {}
+      }
+    end
+
     it "redirects to index page" do
-      # post :create, params
-      # expect(subject).to redirect_to posts_path
+      subject { post :create, good_params }
+#      post :create, params
+      # Success case to index page
+      expect(subject).to redirect_to post_path
+    end
+
+    it "renders new template on error" do
+      # Error case to show errors on form
+      post :create, bad_params
+      expect(subject).to render_template :new
     end
   end
 end
