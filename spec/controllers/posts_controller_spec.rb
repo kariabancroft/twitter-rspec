@@ -44,10 +44,7 @@ RSpec.describe PostsController, type: :controller do
     end
 
     it "redirects to index page" do
-      subject { post :create, good_params }
-
-      # Same as above
-      # post :create, params
+      post :create, good_params
 
       # Success case to index page
       expect(subject).to redirect_to posts_path
